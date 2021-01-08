@@ -33,3 +33,31 @@ function swap(array, i, j) {
   array[i] = array[j];
   array[j] = temp;
 }
+
+export function getInsertionSortAnimations(array) {
+  const animations = []
+  if (array.length <= 1) return array;
+  doInsertionSort(array, animations);
+  return animations;
+}
+
+function doInsertionSort(array, animations) {
+  const n = array.length;
+  for (let i = 1; i < n; i++) {
+    let cur = array[i];
+    let j = i - 1;
+
+    // Move cur ahead of all elements of array[0..i-1] that are larger than it
+    while (j >= 0 && array[j] > cur) {
+      // Adding string to signify what the colour change should be
+      animations.push([i, j, "compared"]);
+
+      array[j+1] = array[j];
+      animations.push([j+1, array[j]]);
+      animations.push([i, j, "default"]);
+      j -= 1;
+    }
+    array[j + 1] = cur;
+    animations.push([j+1, cur]);
+  }
+}

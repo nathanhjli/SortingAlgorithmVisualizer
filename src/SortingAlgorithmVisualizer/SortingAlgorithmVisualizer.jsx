@@ -1,5 +1,5 @@
 import React from 'react';
-import {getBubbleSortAnimations} from '../SortingAlgorithms/SortingAlgorithms.js';
+import {getBubbleSortAnimations, getInsertionSortAnimations} from '../SortingAlgorithms/SortingAlgorithms.js';
 import './SortingAlgorithmVisualizer.css';
 
 // The speed of the animations in milliseconds
@@ -22,6 +22,8 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 			array: [],
 			size: DEFAULT_SIZE,
 		}
+
+		this.sizeInput = React.createRef();
 	}
 
 	componentDidMount() {
@@ -37,6 +39,13 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 			array: newArray, 
 			size: size,
 		});
+	}
+
+	updateSize(newSize) {
+		this.setState({
+			size: newSize
+		})
+		this.resetArray(newSize);
 	}
 
 	mergeSort() {
@@ -78,7 +87,27 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 	}
 
 	insertionSort() {
-
+		const animations = getInsertionSortAnimations(this.state.array);
+		for (let i = 0; i < animations.length; i++) {
+			const arrayBars = document.getElementsByClassName('array-bar');
+			const isColourChange = animations[i].length !== 2;
+			if (isColourChange) {
+				const [barOneIndex, barTwoIndex, colourType] = animations[i];
+				const barOneStyle = arrayBars[barOneIndex].style;
+				const barTwoStyle = arrayBars[barTwoIndex].style;
+				const colour = colourType === "compared" ? COMPARED_COLOUR : DEFAULT_COLOUR;
+				setTimeout(() => {
+					barOneStyle.backgroundColor = colour;
+					barTwoStyle.backgroundColor = colour;
+				}, i * ANIMATION_SPEED_MS);
+			} else {
+				const [barOneIndex, newHeight] = animations[i];
+				const barOneStyle = arrayBars[barOneIndex].style;
+				setTimeout(() => {
+					barOneStyle.height = `${newHeight}px`;
+				}, i * ANIMATION_SPEED_MS);
+			}
+		}
 	}
 
 	selectionSort() {
@@ -102,8 +131,12 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 				))}
 			<br></br>
 			<button onClick={() => this.resetArray(this.state.size)}>Generate New Random Array</button>
-			<button>Change Array Size</button>
+			<br></br>
+			<input placeholder={this.state.size} ref={this.sizeInput}/>
+			<button onClick={() => this.updateSize(this.sizeInput.current.value)}>Change Array Size</button>
+			<br></br>
 			<button onClick={() => this.bubbleSort()}>Bubble Sort</button>
+			<button onClick={() => this.insertionSort()}>Insertion Sort</button>
 			</div>
 		);
 	}
