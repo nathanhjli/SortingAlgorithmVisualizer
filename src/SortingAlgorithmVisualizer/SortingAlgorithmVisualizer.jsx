@@ -1,5 +1,5 @@
 import React from 'react';
-import {getBubbleSortAnimations, getInsertionSortAnimations} from '../SortingAlgorithms/SortingAlgorithms.js';
+import {getQuickSortAnimations, getBubbleSortAnimations, getInsertionSortAnimations, getSelectionSortAnimations} from '../SortingAlgorithms/SortingAlgorithms.js';
 import './SortingAlgorithmVisualizer.css';
 
 // The speed of the animations in milliseconds
@@ -53,7 +53,29 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 	}
 
 	quickSort() {
-
+		const animations = getQuickSortAnimations(this.state.array);
+		for (let i = 0; i < animations.length; i++) {
+			const arrayBars = document.getElementsByClassName('array-bar');
+			const isColourChange = animations[i].length !== 4;
+			if (isColourChange) {
+				const [barOneIndex, barTwoIndex, colourType] = animations[i];
+				const barOneStyle = arrayBars[barOneIndex].style;
+				const barTwoStyle = arrayBars[barTwoIndex].style;
+				const colour = colourType === "compared" ? COMPARED_COLOUR : DEFAULT_COLOUR;
+				setTimeout(() => {
+					barOneStyle.backgroundColor = colour;
+					barTwoStyle.backgroundColor = colour;
+				}, i * ANIMATION_SPEED_MS);
+			} else {
+				const [barOneIndex, barOneNewHeight, barTwoIndex, barTwoNewHeight] = animations[i];
+				const barOneStyle = arrayBars[barOneIndex].style;
+				const barTwoStyle = arrayBars[barTwoIndex].style;
+				setTimeout(() => {
+					barOneStyle.height = `${barOneNewHeight}px`;
+					barTwoStyle.height = `${barTwoNewHeight}px`;
+				}, i * ANIMATION_SPEED_MS);
+			}
+		}
 	}
 
 	heapSort() {
@@ -111,7 +133,29 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 	}
 
 	selectionSort() {
-
+		const animations = getSelectionSortAnimations(this.state.array);
+		for (let i = 0; i < animations.length; i++) {
+			const arrayBars = document.getElementsByClassName('array-bar');
+			const isColourChange = animations[i].length !== 4;
+			if (isColourChange) {
+				const [barOneIndex, barTwoIndex, colourType] = animations[i];
+				const barOneStyle = arrayBars[barOneIndex].style;
+				const barTwoStyle = arrayBars[barTwoIndex].style;
+				const colour = colourType === "compared" ? COMPARED_COLOUR : DEFAULT_COLOUR;
+				setTimeout(() => {
+					barOneStyle.backgroundColor = colour;
+					barTwoStyle.backgroundColor = colour;
+				}, i * ANIMATION_SPEED_MS);
+			} else {
+				const [barOneIndex, barOneNewHeight, barTwoIndex, barTwoNewHeight] = animations[i];
+				const barOneStyle = arrayBars[barOneIndex].style;
+				const barTwoStyle = arrayBars[barTwoIndex].style;
+				setTimeout(() => {
+					barOneStyle.height = `${barOneNewHeight}px`;
+					barTwoStyle.height = `${barTwoNewHeight}px`;
+				}, i * ANIMATION_SPEED_MS);
+			}
+		}
 	}
 
 	render() {
@@ -135,8 +179,10 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 			<input placeholder={this.state.size} ref={this.sizeInput}/>
 			<button onClick={() => this.updateSize(this.sizeInput.current.value)}>Change Array Size</button>
 			<br></br>
+			<button onClick={() => this.quickSort()}>Quick Sort</button>
 			<button onClick={() => this.bubbleSort()}>Bubble Sort</button>
 			<button onClick={() => this.insertionSort()}>Insertion Sort</button>
+			<button onClick={() => this.selectionSort()}>Selection Sort</button>
 			</div>
 		);
 	}
