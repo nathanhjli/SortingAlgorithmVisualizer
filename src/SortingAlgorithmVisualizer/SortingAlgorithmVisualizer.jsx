@@ -21,6 +21,8 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 		this.state = {
 			array: [],
 			size: DEFAULT_SIZE,
+			comparisons: 0,
+			swaps: 0,
 		}
 
 		this.sizeInput = React.createRef();
@@ -38,6 +40,8 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 		this.setState({
 			array: newArray, 
 			size: size,
+			comparisons: 0,
+			swaps: 0,
 		});
 	}
 
@@ -65,6 +69,10 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 				setTimeout(() => {
 					barOneStyle.backgroundColor = colour;
 					barTwoStyle.backgroundColor = colour;
+					if (colour === COMPARED_COLOUR) {
+						// Comparison so increment # of comparisons
+						this.setState({comparisons: this.state.comparisons + 1});
+					}
 				}, i * ANIMATION_SPEED_MS);
 			} else {
 				const [barOneIndex, barOneNewHeight, barTwoIndex, barTwoNewHeight] = animations[i];
@@ -73,6 +81,7 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 				setTimeout(() => {
 					barOneStyle.height = `${barOneNewHeight}px`;
 					barTwoStyle.height = `${barTwoNewHeight}px`;
+					this.setState({swaps: this.state.swaps + 1});
 				}, i * ANIMATION_SPEED_MS);
 			}
 		}
@@ -95,6 +104,10 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 				setTimeout(() => {
 					barOneStyle.backgroundColor = colour;
 					barTwoStyle.backgroundColor = colour;
+					if (colour === COMPARED_COLOUR) {
+						// Comparison so increment # of comparisons
+						this.setState({comparisons: this.state.comparisons + 1});
+					}
 				}, i * ANIMATION_SPEED_MS);
 			} else {
 				const [barOneIndex, barOneNewHeight, barTwoIndex, barTwoNewHeight] = animations[i];
@@ -103,6 +116,7 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 				setTimeout(() => {
 					barOneStyle.height = `${barOneNewHeight}px`;
 					barTwoStyle.height = `${barTwoNewHeight}px`;
+					this.setState({swaps: this.state.swaps + 1});
 				}, i * ANIMATION_SPEED_MS);
 			}
 		}
@@ -121,12 +135,17 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 				setTimeout(() => {
 					barOneStyle.backgroundColor = colour;
 					barTwoStyle.backgroundColor = colour;
+					if (colour === COMPARED_COLOUR) {
+						// Comparison so increment # of comparisons
+						this.setState({comparisons: this.state.comparisons + 1});
+					}
 				}, i * ANIMATION_SPEED_MS);
 			} else {
 				const [barOneIndex, newHeight] = animations[i];
 				const barOneStyle = arrayBars[barOneIndex].style;
 				setTimeout(() => {
 					barOneStyle.height = `${newHeight}px`;
+					this.setState({swaps: this.state.swaps + 1});
 				}, i * ANIMATION_SPEED_MS);
 			}
 		}
@@ -145,6 +164,10 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 				setTimeout(() => {
 					barOneStyle.backgroundColor = colour;
 					barTwoStyle.backgroundColor = colour;
+					if (colour === COMPARED_COLOUR) {
+						// Comparison so increment # of comparisons
+						this.setState({comparisons: this.state.comparisons + 1});
+					}
 				}, i * ANIMATION_SPEED_MS);
 			} else {
 				const [barOneIndex, barOneNewHeight, barTwoIndex, barTwoNewHeight] = animations[i];
@@ -153,6 +176,7 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 				setTimeout(() => {
 					barOneStyle.height = `${barOneNewHeight}px`;
 					barTwoStyle.height = `${barTwoNewHeight}px`;
+					this.setState({swaps: this.state.swaps + 1});
 				}, i * ANIMATION_SPEED_MS);
 			}
 		}
@@ -178,6 +202,10 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 			<br></br>
 			<input placeholder={this.state.size} ref={this.sizeInput}/>
 			<button onClick={() => this.updateSize(this.sizeInput.current.value)}>Change Array Size</button>
+			<br></br>
+			<p>Comparisons: {this.state.comparisons}</p>
+			<br></br>
+			<p>Swaps: {this.state.swaps}</p>
 			<br></br>
 			<button onClick={() => this.quickSort()}>Quick Sort</button>
 			<button onClick={() => this.bubbleSort()}>Bubble Sort</button>
