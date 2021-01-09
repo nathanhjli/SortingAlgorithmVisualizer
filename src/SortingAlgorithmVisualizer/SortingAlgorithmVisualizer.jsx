@@ -95,12 +95,12 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 		const animations = getBubbleSortAnimations(this.state.array);
 		for (let i = 0; i < animations.length; i++) {
 			const arrayBars = document.getElementsByClassName('array-bar');
-			const isColourChange = i % 3 !== 1;
+			const isColourChange = animations[i].length != 4;
 			if (isColourChange) {
 				const [barOneIndex, barTwoIndex] = animations[i];
 				const barOneStyle = arrayBars[barOneIndex].style;
 				const barTwoStyle = arrayBars[barTwoIndex].style;
-				const colour = i % 3 === 0 ? COMPARED_COLOUR : DEFAULT_COLOUR;
+				const colour = animations[i][2] === "compared" ? COMPARED_COLOUR : DEFAULT_COLOUR;
 				setTimeout(() => {
 					barOneStyle.backgroundColor = colour;
 					barTwoStyle.backgroundColor = colour;
@@ -203,9 +203,7 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 			<input placeholder={this.state.size} ref={this.sizeInput}/>
 			<button onClick={() => this.updateSize(this.sizeInput.current.value)}>Change Array Size</button>
 			<br></br>
-			<p>Comparisons: {this.state.comparisons}</p>
-			<br></br>
-			<p>Swaps: {this.state.swaps}</p>
+			<p>Comparisons: {this.state.comparisons} Swaps: {this.state.swaps}</p>
 			<br></br>
 			<button onClick={() => this.quickSort()}>Quick Sort</button>
 			<button onClick={() => this.bubbleSort()}>Bubble Sort</button>
