@@ -58,6 +58,22 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 		}
 	}
 
+	uploadFile(event) {
+		const reader = new FileReader();
+		reader.onload = async (event) => {
+			const text = (event.target.result);
+			const newArray = text.split(" ").map(Number);
+			this.setState({
+				array: newArray,
+				size: newArray.length,
+				comparisons: 0,
+				swaps: 0,
+				previous_array: newArray.slice(),
+			})
+		};
+		reader.readAsText(event.target.files[0]);
+	}
+
 	updateSize(newSize) {
 		this.setState({
 			size: newSize
@@ -313,6 +329,10 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 			<button onClick={() => this.resetArray(this.state.size)}>Generate New Random Array</button>
 			<br></br>
 			<button onClick={() => this.usePreviousArray()}>Re-use Array</button>
+			<br></br>
+			<p>Upload Text File for Array</p>
+			<input type="file" accept=".txt" onChange={e => this.uploadFile(e)}/>
+			<br></br>
 			<br></br>
 			<input placeholder={this.state.size} ref={this.sizeInput}/>
 			<button onClick={() => this.updateSize(this.sizeInput.current.value)}>Change Array Size</button>
