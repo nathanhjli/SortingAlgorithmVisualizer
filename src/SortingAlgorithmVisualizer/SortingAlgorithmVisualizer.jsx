@@ -23,6 +23,7 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 			size: DEFAULT_SIZE,
 			comparisons: 0,
 			swaps: 0,
+			previous_array: [],
 		}
 
 		this.sizeInput = React.createRef();
@@ -42,7 +43,19 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 			size: size,
 			comparisons: 0,
 			swaps: 0,
+			previous_array: newArray.slice(),
 		});
+	}
+
+	usePreviousArray() {
+		if (this.state.previous_array !== []) {
+			this.setState({
+				array: this.state.previous_array.slice(),
+				size: this.state.previous_array.length,
+				comparisons: 0,
+				swaps: 0,
+			})
+		}
 	}
 
 	updateSize(newSize) {
@@ -298,6 +311,8 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 				))}
 			<br></br>
 			<button onClick={() => this.resetArray(this.state.size)}>Generate New Random Array</button>
+			<br></br>
+			<button onClick={() => this.usePreviousArray()}>Re-use Array</button>
 			<br></br>
 			<input placeholder={this.state.size} ref={this.sizeInput}/>
 			<button onClick={() => this.updateSize(this.sizeInput.current.value)}>Change Array Size</button>
