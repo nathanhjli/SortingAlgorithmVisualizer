@@ -1,5 +1,5 @@
 import React from 'react';
-import {getQuickSortAnimations, getHeapSortAnimations, getBubbleSortAnimations, getInsertionSortAnimations, getSelectionSortAnimations} from '../SortingAlgorithms/SortingAlgorithms.js';
+import {getMergeSortAnimations, getQuickSortAnimations, getHeapSortAnimations, getBubbleSortAnimations, getInsertionSortAnimations, getSelectionSortAnimations} from '../SortingAlgorithms/SortingAlgorithms.js';
 import './SortingAlgorithmVisualizer.css';
 
 // The speed of the animations in milliseconds
@@ -53,7 +53,40 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 	}
 
 	mergeSort() {
-
+		const animations = getMergeSortAnimations(this.state.array);
+		let swaps = 0;
+		let comparisons = 0;
+		for (let i = 0; i < animations.length; i++) {
+			const arrayBars = document.getElementsByClassName('array-bar');
+			const isColourChange = animations[i].length !== 2;
+			if (isColourChange) {
+				const [barOneIndex, barTwoIndex, colourType] = animations[i];
+				const barOneStyle = arrayBars[barOneIndex].style;
+				const barTwoStyle = arrayBars[barTwoIndex].style;
+				const colour = colourType === "compared" ? COMPARED_COLOUR : DEFAULT_COLOUR;
+				if (colour === COMPARED_COLOUR) {
+					// Comparison so increment # of comparisons
+					comparisons += 1;
+				}
+				setTimeout(() => {
+					barOneStyle.backgroundColor = colour;
+					barTwoStyle.backgroundColor = colour;
+				}, i * ANIMATION_SPEED_MS);
+			} else {
+				const [barOneIndex, newHeight] = animations[i];
+				const barOneStyle = arrayBars[barOneIndex].style;
+				swaps += 1;
+				setTimeout(() => {
+					barOneStyle.height = `${newHeight}px`;
+				}, i * ANIMATION_SPEED_MS);
+			}
+		}
+		setTimeout(() => {
+			this.setState({
+				swaps: swaps,
+				comparisons: comparisons,
+			})
+		}, animations.length * ANIMATION_SPEED_MS);
 	}
 
 	quickSort() {
@@ -271,6 +304,7 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 			<br></br>
 			<p>Comparisons: {this.state.comparisons} Swaps: {this.state.swaps}</p>
 			<br></br>
+			<button onClick={() => this.mergeSort()}>Merge Sort</button>
 			<button onClick={() => this.quickSort()}>Quick Sort</button>
 			<button onClick={() => this.heapSort()}>Heap Sort</button>
 			<button onClick={() => this.bubbleSort()}>Bubble Sort</button>

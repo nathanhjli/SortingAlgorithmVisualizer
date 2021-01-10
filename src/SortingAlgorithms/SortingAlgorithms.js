@@ -1,3 +1,78 @@
+export function getMergeSortAnimations(array) {
+  const animations = []
+  if (array.length <= 1) return array;
+  doMergeSort(array, 0, array.length - 1, animations);
+  return animations;
+}
+
+function doMergeSort(array, l, r, animations) {
+  if (l < r){
+    // Find middle
+    let m = Math.floor((l + r) / 2);
+
+    // Sort the halves
+    doMergeSort(array, l, m, animations);
+    doMergeSort(array, m + 1, r, animations);
+
+    // Merge the sorted halves
+    merge(array, l, m, r, animations);
+  }
+}
+
+function merge(array, l, m, r, animations) {
+  const n1 = m - l + 1;
+  const n2 = r - m;
+
+  let temp_L = [];
+  let temp_R = [];
+
+  for (let i = 0; i < n1; i++) {
+    temp_L.push(array[l + i]);
+  }
+  for (let i = 0; i < n2; i++) {
+    temp_R.push(array[m + 1 + i]);
+  }
+
+  // Merge the two arrays
+  let i = 0;
+  let j = 0;
+  let k = l;
+
+  while (i < n1 && j < n2) {
+    animations.push([l + i, m + 1 + j, "compared"]);
+    animations.push([l + i, m + 1 + j, "default"]);
+    if (temp_L[i] < temp_R[j]) {
+      array[k] = temp_L[i];
+      animations.push([k, array[k]]);
+      i++;
+    } else {
+      array[k] = temp_R[j];
+      animations.push([k, array[k]]);
+      j++;
+    }
+    k++;
+  }
+
+  // Copy any remaining elements over
+  while (i < n1) {
+    animations.push([l + i, l + i, "compared"]);
+    animations.push([l + i, l + i, "default"]);
+    array[k] = temp_L[i];
+    animations.push([k, array[k]]);
+    i++;
+    k++;
+  }
+
+  while (j < n2) {
+    animations.push([m + 1 + j, m + 1 + j, "compared"]);
+    animations.push([m + 1 + j, m + 1 + j, "default"]);
+    array[k] = temp_R[j];
+    animations.push([k, array[k]]);
+    j++;
+    k++;
+  }
+}
+
 export function getQuickSortAnimations(array) {
   const animations = []
   if (array.length <= 1) return array;
