@@ -1,5 +1,5 @@
 import React from 'react';
-import {getQuickSortAnimations, getBubbleSortAnimations, getInsertionSortAnimations, getSelectionSortAnimations} from '../SortingAlgorithms/SortingAlgorithms.js';
+import {getQuickSortAnimations, getHeapSortAnimations, getBubbleSortAnimations, getInsertionSortAnimations, getSelectionSortAnimations} from '../SortingAlgorithms/SortingAlgorithms.js';
 import './SortingAlgorithmVisualizer.css';
 
 // The speed of the animations in milliseconds
@@ -58,6 +58,8 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 
 	quickSort() {
 		const animations = getQuickSortAnimations(this.state.array);
+		let swaps = 0;
+		let comparisons = 0;
 		for (let i = 0; i < animations.length; i++) {
 			const arrayBars = document.getElementsByClassName('array-bar');
 			const isColourChange = animations[i].length !== 4;
@@ -66,64 +68,114 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 				const barOneStyle = arrayBars[barOneIndex].style;
 				const barTwoStyle = arrayBars[barTwoIndex].style;
 				const colour = colourType === "compared" ? COMPARED_COLOUR : DEFAULT_COLOUR;
+				if (colour === COMPARED_COLOUR) {
+					comparisons += 1;
+				}
 				setTimeout(() => {
 					barOneStyle.backgroundColor = colour;
 					barTwoStyle.backgroundColor = colour;
-					if (colour === COMPARED_COLOUR) {
-						// Comparison so increment # of comparisons
-						this.setState({comparisons: this.state.comparisons + 1});
-					}
 				}, i * ANIMATION_SPEED_MS);
 			} else {
 				const [barOneIndex, barOneNewHeight, barTwoIndex, barTwoNewHeight] = animations[i];
 				const barOneStyle = arrayBars[barOneIndex].style;
 				const barTwoStyle = arrayBars[barTwoIndex].style;
+				swaps += 1;
 				setTimeout(() => {
 					barOneStyle.height = `${barOneNewHeight}px`;
 					barTwoStyle.height = `${barTwoNewHeight}px`;
-					this.setState({swaps: this.state.swaps + 1});
 				}, i * ANIMATION_SPEED_MS);
 			}
 		}
+		setTimeout(() => {
+			this.setState({
+				swaps: swaps,
+				comparisons: comparisons,
+			})
+		}, animations.length * ANIMATION_SPEED_MS);
 	}
 
 	heapSort() {
-
+		const animations = getHeapSortAnimations(this.state.array);
+		let swaps = 0;
+		let comparisons = 0;
+		for (let i = 0; i < animations.length; i++) {
+			const arrayBars = document.getElementsByClassName('array-bar');
+			const isColourChange = animations[i].length !== 4;
+			if (isColourChange) {
+				const [barOneIndex, barTwoIndex, colourType] = animations[i];
+				const barOneStyle = arrayBars[barOneIndex].style;
+				const barTwoStyle = arrayBars[barTwoIndex].style;
+				const colour = colourType === "compared" ? COMPARED_COLOUR : DEFAULT_COLOUR;
+				if (colour === COMPARED_COLOUR) {
+					// Comparison so increment # of comparisons
+					comparisons += 1;
+				}
+				setTimeout(() => {
+					barOneStyle.backgroundColor = colour;
+					barTwoStyle.backgroundColor = colour;
+				}, i * ANIMATION_SPEED_MS);
+			} else {
+				const [barOneIndex, barOneNewHeight, barTwoIndex, barTwoNewHeight] = animations[i];
+				const barOneStyle = arrayBars[barOneIndex].style;
+				const barTwoStyle = arrayBars[barTwoIndex].style;
+				swaps += 1;
+				setTimeout(() => {
+					barOneStyle.height = `${barOneNewHeight}px`;
+					barTwoStyle.height = `${barTwoNewHeight}px`;
+				}, i * ANIMATION_SPEED_MS);
+			}
+		}
+		setTimeout(() => {
+			this.setState({
+				swaps: swaps,
+				comparisons: comparisons,
+			})
+		}, animations.length * ANIMATION_SPEED_MS);
 	}
 
 	bubbleSort() {
 		const animations = getBubbleSortAnimations(this.state.array);
+		let swaps = 0;
+		let comparisons = 0;
 		for (let i = 0; i < animations.length; i++) {
 			const arrayBars = document.getElementsByClassName('array-bar');
-			const isColourChange = animations[i].length != 4;
+			const isColourChange = animations[i].length !== 4;
 			if (isColourChange) {
 				const [barOneIndex, barTwoIndex] = animations[i];
 				const barOneStyle = arrayBars[barOneIndex].style;
 				const barTwoStyle = arrayBars[barTwoIndex].style;
 				const colour = animations[i][2] === "compared" ? COMPARED_COLOUR : DEFAULT_COLOUR;
+				if (colour === COMPARED_COLOUR) {
+					// Comparison so increment # of comparisons
+					comparisons += 1;
+				}
 				setTimeout(() => {
 					barOneStyle.backgroundColor = colour;
 					barTwoStyle.backgroundColor = colour;
-					if (colour === COMPARED_COLOUR) {
-						// Comparison so increment # of comparisons
-						this.setState({comparisons: this.state.comparisons + 1});
-					}
 				}, i * ANIMATION_SPEED_MS);
 			} else {
 				const [barOneIndex, barOneNewHeight, barTwoIndex, barTwoNewHeight] = animations[i];
 				const barOneStyle = arrayBars[barOneIndex].style;
 				const barTwoStyle = arrayBars[barTwoIndex].style;
+				swaps += 1;
 				setTimeout(() => {
 					barOneStyle.height = `${barOneNewHeight}px`;
 					barTwoStyle.height = `${barTwoNewHeight}px`;
-					this.setState({swaps: this.state.swaps + 1});
 				}, i * ANIMATION_SPEED_MS);
 			}
 		}
+		setTimeout(() => {
+			this.setState({
+				swaps: swaps,
+				comparisons: comparisons,
+			})
+		}, animations.length * ANIMATION_SPEED_MS);
 	}
 
 	insertionSort() {
 		const animations = getInsertionSortAnimations(this.state.array);
+		let swaps = 0;
+		let comparisons = 0;
 		for (let i = 0; i < animations.length; i++) {
 			const arrayBars = document.getElementsByClassName('array-bar');
 			const isColourChange = animations[i].length !== 2;
@@ -132,27 +184,35 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 				const barOneStyle = arrayBars[barOneIndex].style;
 				const barTwoStyle = arrayBars[barTwoIndex].style;
 				const colour = colourType === "compared" ? COMPARED_COLOUR : DEFAULT_COLOUR;
+				if (colour === COMPARED_COLOUR) {
+					// Comparison so increment # of comparisons
+					comparisons += 1;
+				}
 				setTimeout(() => {
 					barOneStyle.backgroundColor = colour;
 					barTwoStyle.backgroundColor = colour;
-					if (colour === COMPARED_COLOUR) {
-						// Comparison so increment # of comparisons
-						this.setState({comparisons: this.state.comparisons + 1});
-					}
 				}, i * ANIMATION_SPEED_MS);
 			} else {
 				const [barOneIndex, newHeight] = animations[i];
 				const barOneStyle = arrayBars[barOneIndex].style;
+				swaps += 1;
 				setTimeout(() => {
 					barOneStyle.height = `${newHeight}px`;
-					this.setState({swaps: this.state.swaps + 1});
 				}, i * ANIMATION_SPEED_MS);
 			}
 		}
+		setTimeout(() => {
+			this.setState({
+				swaps: swaps,
+				comparisons: comparisons,
+			})
+		}, animations.length * ANIMATION_SPEED_MS);
 	}
 
 	selectionSort() {
 		const animations = getSelectionSortAnimations(this.state.array);
+		let swaps = 0;
+		let comparisons = 0;
 		for (let i = 0; i < animations.length; i++) {
 			const arrayBars = document.getElementsByClassName('array-bar');
 			const isColourChange = animations[i].length !== 4;
@@ -161,25 +221,31 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 				const barOneStyle = arrayBars[barOneIndex].style;
 				const barTwoStyle = arrayBars[barTwoIndex].style;
 				const colour = colourType === "compared" ? COMPARED_COLOUR : DEFAULT_COLOUR;
+				if (colour === COMPARED_COLOUR) {
+					// Comparison so increment # of comparisons
+					comparisons += 1;
+				}
 				setTimeout(() => {
 					barOneStyle.backgroundColor = colour;
 					barTwoStyle.backgroundColor = colour;
-					if (colour === COMPARED_COLOUR) {
-						// Comparison so increment # of comparisons
-						this.setState({comparisons: this.state.comparisons + 1});
-					}
 				}, i * ANIMATION_SPEED_MS);
 			} else {
 				const [barOneIndex, barOneNewHeight, barTwoIndex, barTwoNewHeight] = animations[i];
 				const barOneStyle = arrayBars[barOneIndex].style;
 				const barTwoStyle = arrayBars[barTwoIndex].style;
+				swaps += 1;
 				setTimeout(() => {
 					barOneStyle.height = `${barOneNewHeight}px`;
 					barTwoStyle.height = `${barTwoNewHeight}px`;
-					this.setState({swaps: this.state.swaps + 1});
 				}, i * ANIMATION_SPEED_MS);
 			}
 		}
+		setTimeout(() => {
+			this.setState({
+				swaps: swaps,
+				comparisons: comparisons,
+			})
+		}, animations.length * ANIMATION_SPEED_MS);
 	}
 
 	render() {
@@ -206,6 +272,7 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 			<p>Comparisons: {this.state.comparisons} Swaps: {this.state.swaps}</p>
 			<br></br>
 			<button onClick={() => this.quickSort()}>Quick Sort</button>
+			<button onClick={() => this.heapSort()}>Heap Sort</button>
 			<button onClick={() => this.bubbleSort()}>Bubble Sort</button>
 			<button onClick={() => this.insertionSort()}>Insertion Sort</button>
 			<button onClick={() => this.selectionSort()}>Selection Sort</button>

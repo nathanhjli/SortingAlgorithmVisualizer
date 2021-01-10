@@ -38,6 +38,61 @@ function partition(array, low, high, animations) {
   return j+1;
 }
 
+export function getHeapSortAnimations(array) {
+  const animations = []
+  if (array.length <= 1) return array;
+  doHeapSort(array, array.length, animations);
+  return animations;
+}
+
+function doHeapSort(array, n, animations) {
+  // Build the heap from array
+  for (let i = n/2 - 1; i >= 0; i--) {
+    heapify(array, n, i, animations);
+  }
+
+  // Extract each element from the heap. Since array needs to be sorted in increasing order
+  // the root of the max-heap needs to go to the end of the array
+  for (let i = n - 1; i > 0; i--) {
+    // Move the root to the end
+    swap(array, 0, i);
+    animations.push([0, array[0], i, array[i]]);
+
+    heapify(array, i, 0, animations);
+  }
+}
+
+function heapify(array, n, i, animations) {
+  // This function turns the subtree rooted from i into a max heap
+  let largest = i; 
+  let l = 2 * i + 1;
+  let r = 2 * i + 2;
+
+  if (l < n) {
+    animations.push([largest, l, "compared"]);
+    animations.push([largest, l, "default"]);
+    if (array[l] > array[largest]) {
+      largest = l;
+    }
+  }
+
+  if (r < n) {
+    animations.push([largest, r, "compared"]);
+    animations.push([largest, r, "default"]);
+    if (array[r] > array[largest]) {
+      largest = r;
+    }
+  }
+
+  if (largest !== i) {
+    swap(array, i, largest);
+    animations.push([i, array[i], largest, array[largest]]);
+
+    // Heapify the subtree from the largest
+    heapify(array, n, largest, animations);
+  }
+}
+
 export function getBubbleSortAnimations(array) {
   const animations = []
   if (array.length <= 1) return array;
