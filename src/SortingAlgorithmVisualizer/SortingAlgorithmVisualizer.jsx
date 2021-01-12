@@ -1,18 +1,13 @@
 import React from 'react';
 import {getMergeSortAnimations, getQuickSortAnimations, getHeapSortAnimations, getBubbleSortAnimations, getInsertionSortAnimations, getSelectionSortAnimations} from '../SortingAlgorithms/SortingAlgorithms.js';
 import './SortingAlgorithmVisualizer.css';
+import ColourWheel from './ColourWheel.jsx';
 
 // The speed of the animations in milliseconds
 const ANIMATION_SPEED_MS = 10;
 
 // The default size of the array
 const DEFAULT_SIZE = 300;
-
-// The colour of the bars
-const DEFAULT_COLOUR = 'purple';
-
-// The colour of the bars being compared
-const COMPARED_COLOUR = 'red';
 
 export default class SortingAlgorithmVisualizer extends React.Component {
 	constructor(props) {
@@ -24,6 +19,8 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 			comparisons: 0,
 			swaps: 0,
 			previous_array: [],
+			default_colour: 'purple',
+			compared_colour: 'red',
 		}
 
 		this.sizeInput = React.createRef();
@@ -81,6 +78,19 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 		this.resetArray(newSize);
 	}
 
+	changeDefaultBarColour(colour) {
+		const arrayBars = document.getElementsByClassName('array-bar');
+		for (let i = 0; i < this.state.array.length; i++) {
+			const barStyle = arrayBars[i].style;
+			barStyle.backgroundColor = colour;
+		}
+		this.setState({default_colour: colour});
+	}
+
+	changeComparedBarColour(colour) {
+		this.setState({compared_colour: colour});
+	}
+
 	mergeSort() {
 		const animations = getMergeSortAnimations(this.state.array);
 		let swaps = 0;
@@ -92,8 +102,8 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 				const [barOneIndex, barTwoIndex, colourType] = animations[i];
 				const barOneStyle = arrayBars[barOneIndex].style;
 				const barTwoStyle = arrayBars[barTwoIndex].style;
-				const colour = colourType === "compared" ? COMPARED_COLOUR : DEFAULT_COLOUR;
-				if (colour === COMPARED_COLOUR) {
+				const colour = colourType === "compared" ? this.state.compared_colour : this.state.default_colour;
+				if (colour === this.state.compared_colour) {
 					// Comparison so increment # of comparisons
 					comparisons += 1;
 				}
@@ -129,8 +139,8 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 				const [barOneIndex, barTwoIndex, colourType] = animations[i];
 				const barOneStyle = arrayBars[barOneIndex].style;
 				const barTwoStyle = arrayBars[barTwoIndex].style;
-				const colour = colourType === "compared" ? COMPARED_COLOUR : DEFAULT_COLOUR;
-				if (colour === COMPARED_COLOUR) {
+				const colour = colourType === "compared" ? this.state.compared_colour : this.state.default_colour;
+				if (colour === this.state.compared_colour) {
 					comparisons += 1;
 				}
 				setTimeout(() => {
@@ -167,8 +177,8 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 				const [barOneIndex, barTwoIndex, colourType] = animations[i];
 				const barOneStyle = arrayBars[barOneIndex].style;
 				const barTwoStyle = arrayBars[barTwoIndex].style;
-				const colour = colourType === "compared" ? COMPARED_COLOUR : DEFAULT_COLOUR;
-				if (colour === COMPARED_COLOUR) {
+				const colour = colourType === "compared" ? this.state.compared_colour : this.state.default_colour;
+				if (colour === this.state.compared_colour) {
 					// Comparison so increment # of comparisons
 					comparisons += 1;
 				}
@@ -206,8 +216,8 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 				const [barOneIndex, barTwoIndex] = animations[i];
 				const barOneStyle = arrayBars[barOneIndex].style;
 				const barTwoStyle = arrayBars[barTwoIndex].style;
-				const colour = animations[i][2] === "compared" ? COMPARED_COLOUR : DEFAULT_COLOUR;
-				if (colour === COMPARED_COLOUR) {
+				const colour = animations[i][2] === "compared" ? this.state.compared_colour : this.state.default_colour;
+				if (colour === this.state.compared_colour) {
 					// Comparison so increment # of comparisons
 					comparisons += 1;
 				}
@@ -245,8 +255,8 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 				const [barOneIndex, barTwoIndex, colourType] = animations[i];
 				const barOneStyle = arrayBars[barOneIndex].style;
 				const barTwoStyle = arrayBars[barTwoIndex].style;
-				const colour = colourType === "compared" ? COMPARED_COLOUR : DEFAULT_COLOUR;
-				if (colour === COMPARED_COLOUR) {
+				const colour = colourType === "compared" ? this.state.compared_colour : this.state.default_colour;
+				if (colour === this.state.compared_colour) {
 					// Comparison so increment # of comparisons
 					comparisons += 1;
 				}
@@ -282,8 +292,8 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 				const [barOneIndex, barTwoIndex, colourType] = animations[i];
 				const barOneStyle = arrayBars[barOneIndex].style;
 				const barTwoStyle = arrayBars[barTwoIndex].style;
-				const colour = colourType === "compared" ? COMPARED_COLOUR : DEFAULT_COLOUR;
-				if (colour === COMPARED_COLOUR) {
+				const colour = colourType === "compared" ? this.state.compared_colour : this.state.default_colour;
+				if (colour === this.state.compared_colour) {
 					// Comparison so increment # of comparisons
 					comparisons += 1;
 				}
@@ -321,7 +331,7 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 						className="array-bar"
 						key={index}
 						style={{
-							backgroundColor: DEFAULT_COLOUR,
+							backgroundColor: this.state.default_colour,
 							height: `${value}px`,
 						}}></div>
 				))}
@@ -338,6 +348,11 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 			<button onClick={() => this.updateSize(this.sizeInput.current.value)}>Change Array Size</button>
 			<br></br>
 			<p>Comparisons: {this.state.comparisons} Swaps: {this.state.swaps}</p>
+			<br></br>
+			<p>Change Default Bar Colour</p>
+			<ColourWheel callback={colour => this.changeDefaultBarColour(colour)}/>
+			<p>Change Compared Bar Colour</p>
+			<ColourWheel callback={colour => this.changeComparedBarColour(colour)}/>
 			<br></br>
 			<button onClick={() => this.mergeSort()}>Merge Sort</button>
 			<button onClick={() => this.quickSort()}>Quick Sort</button>
