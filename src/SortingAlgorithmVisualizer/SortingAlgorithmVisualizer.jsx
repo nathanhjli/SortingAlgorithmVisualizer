@@ -325,41 +325,59 @@ export default class SortingAlgorithmVisualizer extends React.Component {
 		const {array, dummy} = this.state;
 		
 		return (
-			<div className="array-container">
-				{array.map((value, index) => (
-					<div
-						className="array-bar"
-						key={index}
-						style={{
-							backgroundColor: this.state.default_colour,
-							height: `${value}px`,
-						}}></div>
-				))}
-			<br></br>
-			<button onClick={() => this.resetArray(this.state.size)}>Generate New Random Array</button>
-			<br></br>
-			<button onClick={() => this.usePreviousArray()}>Re-use Array</button>
-			<br></br>
-			<p>Upload Text File for Array</p>
-			<input type="file" accept=".txt" onChange={e => this.uploadFile(e)}/>
-			<br></br>
-			<br></br>
-			<input placeholder={this.state.size} ref={this.sizeInput}/>
-			<button onClick={() => this.updateSize(this.sizeInput.current.value)}>Change Array Size</button>
-			<br></br>
-			<p>Comparisons: {this.state.comparisons} Swaps: {this.state.swaps}</p>
-			<br></br>
-			<p>Change Default Bar Colour</p>
-			<ColourWheel callback={colour => this.changeDefaultBarColour(colour)}/>
-			<p>Change Compared Bar Colour</p>
-			<ColourWheel callback={colour => this.changeComparedBarColour(colour)}/>
-			<br></br>
-			<button onClick={() => this.mergeSort()}>Merge Sort</button>
-			<button onClick={() => this.quickSort()}>Quick Sort</button>
-			<button onClick={() => this.heapSort()}>Heap Sort</button>
-			<button onClick={() => this.bubbleSort()}>Bubble Sort</button>
-			<button onClick={() => this.insertionSort()}>Insertion Sort</button>
-			<button onClick={() => this.selectionSort()}>Selection Sort</button>
+			<div>
+				<div className="heading-panel">
+					<div className="horizontal-align">
+						<div className="horizontal-spacing">
+							<button onClick={() => this.resetArray(this.state.size)}>Generate New Random Array</button>
+						</div>
+						<div className="horizontal-spacing">
+							<button onClick={() => this.usePreviousArray()}>Re-use Array</button>
+						</div>
+						<div className="horizontal-spacing">
+							<div className="file-upload">
+								<p>Upload Text File for Array</p>
+								<input type="file" accept=".txt" onChange={e => this.uploadFile(e)}/>
+							</div>
+						</div>
+						<div className="horizontal-spacing">
+							<div className="file-upload">
+								<input placeholder={this.state.size} ref={this.sizeInput}/>
+								<br></br>
+								<button onClick={() => this.updateSize(this.sizeInput.current.value)}>Change Array Size</button>
+							</div>
+						</div>
+						<div className="horizontal-spacing">
+							<div className="file-upload">
+								<p>Default Bar Colour</p>
+								<ColourWheel callback={colour => this.changeDefaultBarColour(colour)}/>
+							</div>
+							<div className="file-upload">
+								<p>Compared Bar Colour</p>
+								<ColourWheel callback={colour => this.changeComparedBarColour(colour)}/>
+							</div>
+					</div>
+					</div>
+				</div>
+				<div className="array-container">
+						{array.map((value, index) => (
+						<div
+							className="array-bar"
+							key={index}
+							style={{
+								backgroundColor: this.state.default_colour,
+								height: `${value}px`,
+							}}></div>
+					))}
+					<br></br>
+					<button onClick={() => this.mergeSort()}>Merge Sort</button>
+					<button onClick={() => this.quickSort()}>Quick Sort</button>
+					<button onClick={() => this.heapSort()}>Heap Sort</button>
+					<button onClick={() => this.bubbleSort()}>Bubble Sort</button>
+					<button onClick={() => this.insertionSort()}>Insertion Sort</button>
+					<button onClick={() => this.selectionSort()}>Selection Sort</button>
+					<p>Comparisons: {this.state.comparisons} Swaps: {this.state.swaps}</p>
+				</div>
 			</div>
 		);
 	}

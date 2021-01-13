@@ -12,8 +12,8 @@ export default class ColourWheel extends React.Component {
     }
 
     this.options = {
-      width: this.props.width || 200,
-      height: this.props.height || 200,
+      width: this.props.width || 100,
+      height: this.props.height || 100,
     }
   };
 

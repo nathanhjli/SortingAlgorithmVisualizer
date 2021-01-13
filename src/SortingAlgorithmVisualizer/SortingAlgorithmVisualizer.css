@@ -1,10 +1,35 @@
 .array-container {
   position: absolute;
   left: 50px;
+  margin: 10px;
 }
 
 .array-bar {
   width: 4px;
   display: inline-block;
   margin: 0 1 px;
+}
+
+.heading-panel {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+
+.horizontal-align {
+  max-width: 2000px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.horizontal-spacing {
+  padding-right: 10px;
+}
+
+.file-upload {
+  display: inline-block;
+}
+
+p { 
+  margin: 0; 
 }
