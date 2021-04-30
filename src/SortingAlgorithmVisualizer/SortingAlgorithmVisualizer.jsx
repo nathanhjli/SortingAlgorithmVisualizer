@@ -3,6 +3,8 @@ import {getMergeSortAnimations, getQuickSortAnimations, getHeapSortAnimations, g
 import './SortingAlgorithmVisualizer.css';
 import ColourWheel from './ColourWheel.jsx';
 
+// Partially adapted from Clement Mihailescu's Sorting Visualizer Tutorial
+
 // The speed of the animations in milliseconds
 const ANIMATION_SPEED_MS = 10;
 
